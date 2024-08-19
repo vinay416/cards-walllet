@@ -36,7 +36,7 @@ class BiometricAuth {
           ),
         ],
         options: const AuthenticationOptions(
-          biometricOnly: true,
+          // biometricOnly: true,
           sensitiveTransaction: false,
         ),
       );

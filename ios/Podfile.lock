@@ -1,0 +1,51 @@
+PODS:
+  - Flutter (1.0.0)
+  - flutter_jailbreak_detection (1.0.0):
+    - Flutter
+    - IOSSecuritySuite
+  - fluttertoast (0.0.2):
+    - Flutter
+    - Toast
+  - IOSSecuritySuite (2.1.0)
+  - local_auth_ios (0.0.1):
+    - Flutter
+  - secure_application (0.0.1):
+    - Flutter
+  - Toast (4.0.0)
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - flutter_jailbreak_detection (from `.symlinks/plugins/flutter_jailbreak_detection/ios`)
+  - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
+  - local_auth_ios (from `.symlinks/plugins/local_auth_ios/ios`)
+  - secure_application (from `.symlinks/plugins/secure_application/ios`)
+
+SPEC REPOS:
+  trunk:
+    - IOSSecuritySuite
+    - Toast
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  flutter_jailbreak_detection:
+    :path: ".symlinks/plugins/flutter_jailbreak_detection/ios"
+  fluttertoast:
+    :path: ".symlinks/plugins/fluttertoast/ios"
+  local_auth_ios:
+    :path: ".symlinks/plugins/local_auth_ios/ios"
+  secure_application:
+    :path: ".symlinks/plugins/secure_application/ios"
+
+SPEC CHECKSUMS:
+  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  flutter_jailbreak_detection: c5bf66ff6c0c4230769b6ba0bd63eb6ac4148a76
+  fluttertoast: e9a18c7be5413da53898f660530c56f35edfba9c
+  IOSSecuritySuite: 45e8531b05ffa72b5661cbdb5b5b5648a8de1a84
+  local_auth_ios: c6cf091ded637a88f24f86a8875d8b0f526e2605
+  secure_application: 27d424e8c2e770f63e38e280b5a51f921aa9b0c8
+  Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
+
+PODFILE CHECKSUM: 075ddf6b19cdcced44581bd8fbdfb58404a78f8a
+
+COCOAPODS: 1.15.2
