@@ -92,13 +92,10 @@ mixin CardTypeDetectorMixin {
   }
 
   Color cardBackStripColor(CardType? type) {
-    Color color = Colors.white70;
+    Color color = Colors.black;
     switch (type) {
-      case CardType.Discover:
-      case CardType.MasterCard:
-      case CardType.Rupay:
-      case CardType.Visa:
-        color = Colors.black;
+      case CardType.AmericanExpress:
+        color = Colors.white70;
         break;
       default:
     }
