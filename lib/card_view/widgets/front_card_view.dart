@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:security/core/card_type_detector.dart';
-import 'package:security/view/widgets/card_type_asset.dart';
+import 'package:security/card_view/widgets/card_type_asset.dart';
 import 'package:security/view_model/cards_view_model.dart';
 
 class FrontCardView extends StatelessWidget with CardTypeDetectorMixin {

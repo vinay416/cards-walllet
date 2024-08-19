@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:security/model/card_data_model.dart';
-import 'package:security/view/card_view.dart';
+import 'package:security/card_view/card_view.dart';
 import 'package:security/view_model/cards_view_model.dart';
 
 import 'widgets/card_cvv_textfield.dart';

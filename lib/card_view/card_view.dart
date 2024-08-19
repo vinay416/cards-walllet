@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:security/view/card_view_animation.dart';
+import 'package:security/card_view/card_view_animation.dart';
 
 import 'widgets/back_card_view.dart';
 import 'widgets/front_card_view.dart';
