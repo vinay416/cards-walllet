@@ -1,32 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:security/core/card_type_detector.dart';
 import 'package:security/card_view/widgets/card_type_asset.dart';
-import 'package:security/view_model/cards_view_model.dart';
+import 'package:security/model/card_data_model.dart';
 
 class BackCardView extends StatelessWidget with CardTypeDetectorMixin {
-  const BackCardView({super.key});
+  const BackCardView({super.key, required this.cardDetails});
+  final CardDataModel cardDetails;
 
   @override
   Widget build(BuildContext context) {
-    return Selector<CardsViewModel, String>(
-      selector: (p0, p1) => p1.newCard.cardNo,
-      builder: (context, data, _) {
-        final card = getCardType(data);
-        final color = cardColor(card);
-        return ColoredBox(
-          color: color,
-          child: buildBody(),
-        );
-      },
+    final card = getCardType(cardDetails.cardNo);
+    final color = cardColor(card);
+    return ColoredBox(
+      color: color,
+      child: buildBody(card),
     );
   }
 
-  Column buildBody() {
+  Column buildBody(CardType? card) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        buildBlackBoder(),
+        Container(
+          height: 50,
+          width: double.infinity,
+          color: cardBackStripColor(card),
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -44,33 +43,14 @@ class BackCardView extends StatelessWidget with CardTypeDetectorMixin {
   }
 
   Widget buildCardCVV() {
-    return Selector<CardsViewModel, String>(
-      selector: (p0, p1) => p1.newCard.cvv,
-      builder: (context, data, _) {
-        return TextFormField(
-          controller: TextEditingController(text: data),
-          readOnly: true,
-          decoration: const InputDecoration(
-            border: InputBorder.none,
-            hintText: "XXX",
-          ),
-          style: const TextStyle(fontSize: 29),
-        );
-      },
-    );
-  }
-
-  Widget buildBlackBoder() {
-    return Selector<CardsViewModel, String>(
-      selector: (p0, p1) => p1.newCard.cardNo,
-      builder: (context, data, _) {
-        final card = getCardType(data);
-        return Container(
-          height: 50,
-          width: double.infinity,
-          color: cardBackStripColor(card),
-        );
-      },
+    return TextFormField(
+      controller: TextEditingController(text: cardDetails.cvv),
+      readOnly: true,
+      decoration: const InputDecoration(
+        border: InputBorder.none,
+        hintText: "XXX",
+      ),
+      style: const TextStyle(fontSize: 29),
     );
   }
 }

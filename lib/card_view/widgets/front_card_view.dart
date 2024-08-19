@@ -1,25 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:security/core/card_type_detector.dart';
+
 import 'package:security/card_view/widgets/card_type_asset.dart';
-import 'package:security/view_model/cards_view_model.dart';
+import 'package:security/core/card_type_detector.dart';
+import 'package:security/model/card_data_model.dart';
 
 class FrontCardView extends StatelessWidget with CardTypeDetectorMixin {
-  const FrontCardView({super.key});
+  const FrontCardView({super.key, required this.cardDetails});
+  final CardDataModel cardDetails;
 
   @override
   Widget build(BuildContext context) {
-    return Selector<CardsViewModel, String>(
-      selector: (p0, p1) => p1.newCard.cardNo,
-      builder: (context, data, _) {
-        final card = getCardType(data);
-        final color = cardColor(card);
-        return Container(
-          color: color,
-          padding: const EdgeInsets.all(20.0),
-          child: buildBody(),
-        );
-      },
+    final card = getCardType(cardDetails.cardNo);
+    final color = cardColor(card);
+    return Container(
+      color: color,
+      padding: const EdgeInsets.all(20.0),
+      child: buildBody(),
     );
   }
 
@@ -52,58 +48,43 @@ class FrontCardView extends StatelessWidget with CardTypeDetectorMixin {
   }
 
   Widget buildCardNo() {
-    return Selector<CardsViewModel, String>(
-      selector: (p0, p1) => p1.newCard.cardNo,
-      builder: (context, data, _) {
-        return TextFormField(
-          controller: TextEditingController(text: data),
-          readOnly: true,
-          decoration: const InputDecoration(
-            border: InputBorder.none,
-            hintText: "XXXX XXXX XXXX XXXX",
-            isCollapsed: true,
-          ),
-          style: const TextStyle(fontSize: 29),
-        );
-      },
+    return TextFormField(
+      controller: TextEditingController(text: cardDetails.cardNo),
+      readOnly: true,
+      decoration: const InputDecoration(
+        border: InputBorder.none,
+        hintText: "XXXX XXXX XXXX XXXX",
+        isCollapsed: true,
+      ),
+      style: const TextStyle(fontSize: 29),
     );
   }
 
   Widget buildCardExpiry() {
-    return Selector<CardsViewModel, String>(
-      selector: (p0, p1) => p1.newCard.expiry,
-      builder: (context, data, _) {
-        return TextFormField(
-          controller: TextEditingController(text: data),
-          readOnly: true,
-          decoration: const InputDecoration(
-            border: InputBorder.none,
-            hintText: "XX/XXXX",
-            isCollapsed: true,
-          ),
-          style: const TextStyle(fontSize: 20),
-        );
-      },
+    return TextFormField(
+      controller: TextEditingController(text: cardDetails.expiry),
+      readOnly: true,
+      decoration: const InputDecoration(
+        border: InputBorder.none,
+        hintText: "XX/XXXX",
+        isCollapsed: true,
+      ),
+      style: const TextStyle(fontSize: 20),
     );
   }
 
   Widget buildCardName() {
-    return Selector<CardsViewModel, String>(
-      selector: (p0, p1) => p1.newCard.name,
-      builder: (context, data, _) {
-        return TextFormField(
-          controller: TextEditingController(text: data),
-          readOnly: true,
-          maxLines: 2,
-          minLines: 1,
-          decoration: const InputDecoration(
-            border: InputBorder.none,
-            hintText: "XXXXXX XXXXXX",
-            isCollapsed: true,
-          ),
-          style: const TextStyle(fontSize: 20),
-        );
-      },
+    return TextFormField(
+      controller: TextEditingController(text: cardDetails.name),
+      readOnly: true,
+      maxLines: 2,
+      minLines: 1,
+      decoration: const InputDecoration(
+        border: InputBorder.none,
+        hintText: "XXXXXX XXXXXX",
+        isCollapsed: true,
+      ),
+      style: const TextStyle(fontSize: 20),
     );
   }
 

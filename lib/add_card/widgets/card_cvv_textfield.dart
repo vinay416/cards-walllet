@@ -4,7 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:security/view_model/cards_view_model.dart';
 
 class CardCVVTextField extends StatelessWidget {
-  const CardCVVTextField({super.key});
+  const CardCVVTextField({super.key, required this.onTap});
+  final VoidCallback onTap;
 
 
   @override
@@ -12,6 +13,7 @@ class CardCVVTextField extends StatelessWidget {
     final vm = context.read<CardsViewModel>();
 
     return TextFormField(
+      onTap: onTap,
       inputFormatters: [
         FilteringTextInputFormatter.allow(RegExp("[0-9]")),
         LengthLimitingTextInputFormatter(3),

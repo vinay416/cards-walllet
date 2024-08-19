@@ -4,13 +4,15 @@ import 'package:provider/provider.dart';
 import 'package:security/view_model/cards_view_model.dart';
 
 class CardNameTextField extends StatelessWidget {
-  const CardNameTextField({super.key});
+  const CardNameTextField({super.key, required this.onTap});
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     final vm = context.read<CardsViewModel>();
 
     return TextFormField(
+      onTap: onTap,
       inputFormatters: [
         FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
       ],

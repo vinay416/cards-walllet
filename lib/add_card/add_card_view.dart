@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:security/card_view/card_view_animation.dart';
 import 'package:security/model/card_data_model.dart';
-import 'package:security/card_view/card_view.dart';
+import 'package:security/add_card/card_view.dart';
 import 'package:security/view_model/cards_view_model.dart';
 
 import 'widgets/card_cvv_textfield.dart';
@@ -19,6 +20,7 @@ class AddCardView extends StatefulWidget {
 
 class _AddCardViewState extends State<AddCardView> {
   final formKey = GlobalKey<FormState>();
+  final CardController cardController = CardController();
   late CardsViewModel vm;
 
   @override
@@ -27,6 +29,9 @@ class _AddCardViewState extends State<AddCardView> {
     vm = context.read<CardsViewModel>();
     vm.newCard = CardDataModel.empty();
   }
+
+  void showFront() => cardController.reverse();
+  void showBack() => cardController.forward();
 
   @override
   Widget build(BuildContext context) {
@@ -52,11 +57,11 @@ class _AddCardViewState extends State<AddCardView> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const SizedBox(height: 60),
-            const CardView(),
+            CardView(cardController: cardController),
             const SizedBox(height: 50),
-            const CardNoTextField(),
+            CardNoTextField(onTap: showFront),
             const SizedBox(height: 20),
-            const CardNameTextField(),
+            CardNameTextField(onTap: showFront),
             const SizedBox(height: 20),
             buildLastRow(),
             const Spacer(),
@@ -69,14 +74,14 @@ class _AddCardViewState extends State<AddCardView> {
   }
 
   Widget buildLastRow() {
-    return const Row(
+    return Row(
       children: [
         Expanded(
-          child: CardExpiryTextField(),
+          child: CardExpiryTextField(onTap: showFront),
         ),
-        SizedBox(width: 20),
+        const SizedBox(width: 20),
         Expanded(
-          child: CardCVVTextField(),
+          child: CardCVVTextField(onTap: showBack),
         ),
       ],
     );

@@ -4,7 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:security/view_model/cards_view_model.dart';
 
 class CardNoTextField extends StatefulWidget {
-  const CardNoTextField({super.key});
+  const CardNoTextField({super.key, required this.onTap});
+  final VoidCallback onTap;
 
   @override
   State<CardNoTextField> createState() => _CardNoTextFieldState();
@@ -21,6 +22,7 @@ class _CardNoTextFieldState extends State<CardNoTextField> {
   Widget build(BuildContext context) {
     final vm = context.read<CardsViewModel>();
     return TextFormField(
+      onTap: widget.onTap,
       inputFormatters: [
         maskFormatter,
       ],
