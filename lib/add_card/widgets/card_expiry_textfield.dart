@@ -6,7 +6,6 @@ import 'package:security/view_model/cards_view_model.dart';
 class CardExpiryTextField extends StatefulWidget {
   const CardExpiryTextField({super.key, required this.onTap});
   final VoidCallback onTap;
- 
 
   @override
   State<CardExpiryTextField> createState() => _CardExpiryTextFieldState();
@@ -32,6 +31,7 @@ class _CardExpiryTextFieldState extends State<CardExpiryTextField> {
         border: OutlineInputBorder(),
         hintText: "Expiry",
       ),
+      scrollPadding: const EdgeInsets.only(bottom: 220),
       onChanged: (value) {
         final details = vm.newCard.copyWith(expiry: value);
         vm.updateNewCard(details);

@@ -7,7 +7,6 @@ class CardCVVTextField extends StatelessWidget {
   const CardCVVTextField({super.key, required this.onTap});
   final VoidCallback onTap;
 
-
   @override
   Widget build(BuildContext context) {
     final vm = context.read<CardsViewModel>();
@@ -26,6 +25,7 @@ class CardCVVTextField extends StatelessWidget {
         final details = vm.newCard.copyWith(cvv: value);
         vm.updateNewCard(details);
       },
+      scrollPadding: const EdgeInsets.only(bottom: 220),
       validator: (value) {
         if (value == null) return "";
         final bool isValid = value.length == 3;

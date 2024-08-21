@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:security/card_view/card_view_animation.dart';
@@ -10,6 +12,22 @@ import 'widgets/card_cvv_textfield.dart';
 import 'widgets/card_expiry_textfield.dart';
 import 'widgets/card_name_textfield.dart';
 import 'widgets/card_no_textfield.dart';
+
+class AddCard {
+  static void newCard(BuildContext context) {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+      ),
+      context: context,
+      builder: (context) => const AddCardView(),
+    );
+  }
+}
 
 class AddCardView extends StatefulWidget {
   const AddCardView({super.key});
@@ -35,13 +53,12 @@ class _AddCardViewState extends State<AddCardView> {
 
   @override
   Widget build(BuildContext context) {
-    final topbar = MediaQuery.of(context).viewPadding.top;
-    return Scaffold(
-      appBar: AppBar(toolbarHeight: 0),
-      body: SingleChildScrollView(
-        child: Container(
-          height: MediaQuery.of(context).size.height - topbar,
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: FractionallySizedBox(
+        heightFactor: 0.90,
+        child: Padding(
+          padding: const EdgeInsets.all(20).copyWith(top: 5),
           child: buildForm(),
         ),
       ),
@@ -49,27 +66,47 @@ class _AddCardViewState extends State<AddCardView> {
   }
 
   Widget buildForm() {
-    return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
-      child: Form(
-        key: formKey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const SizedBox(height: 60),
-            CardView(cardController: cardController),
-            const SizedBox(height: 50),
-            CardNoTextField(onTap: showFront),
-            const SizedBox(height: 20),
-            CardNameTextField(onTap: showFront),
-            const SizedBox(height: 20),
-            buildLastRow(),
-            const Spacer(),
-            buildValidateButton(),
-            const SizedBox(height: 20),
-          ],
+    return Form(
+      key: formKey,
+      child: Column(
+        children: [
+          const SizedBox(height: 20),
+          CardView(cardController: cardController),
+          const SizedBox(height: 20),
+          buildFields(),
+          const Spacer(),
+          buildValidateButton(),
+        ],
+      ),
+    );
+  }
+
+  Widget buildFields() {
+    return Expanded(
+      flex: 5,
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(10),
+          child: Column(
+            children: [
+              CardNoTextField(onTap: showFront),
+              const SizedBox(height: 20),
+              CardNameTextField(onTap: showFront),
+              const SizedBox(height: 20),
+              buildLastRow(),
+              buildButtonSpace(),
+            ],
+          ),
         ),
       ),
+    );
+  }
+
+  Widget buildButtonSpace() {
+    final bottom = MediaQuery.of(context).viewInsets.bottom;
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      height: (bottom != 0) ? 400 : 0,
     );
   }
 
@@ -109,6 +146,8 @@ class _AddCardViewState extends State<AddCardView> {
             return;
           }
           vm.addCard(vm.newCard);
+          Fluttertoast.showToast(msg: "Card saved");
+          Navigator.pop(context);
         },
         child: const Text(
           "Validate",

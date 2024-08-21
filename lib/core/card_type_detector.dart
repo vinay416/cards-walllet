@@ -71,7 +71,7 @@ mixin CardTypeDetectorMixin {
   }
 
   Color cardColor(CardType? type) {
-    Color color = Colors.white70;
+    Color color = Colors.grey.shade300;
     switch (type) {
       case CardType.AmericanExpress:
         color = Colors.black;
