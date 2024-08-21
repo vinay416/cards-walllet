@@ -38,6 +38,7 @@ class _CardExpiryTextFieldState extends State<CardExpiryTextField> {
       },
       validator: (value) {
         if (value == null) return "";
+        if (value.isEmpty) return "Required";
         final slashIndex = value.indexOf('/');
         final dateStr = value.substring(0, slashIndex);
         final yearStr = value.substring(slashIndex, value.length - 1);

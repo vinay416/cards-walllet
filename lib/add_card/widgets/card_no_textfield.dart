@@ -36,6 +36,7 @@ class _CardNoTextFieldState extends State<CardNoTextField> {
       ),
       validator: (value) {
         if (value == null) return null;
+        if (value.isEmpty) return "Required";
         final unmaskVal = maskFormatter.getUnmaskedText();
         final bool isValid = unmaskVal.length == 16;
         if (!isValid) return "Card no. required";

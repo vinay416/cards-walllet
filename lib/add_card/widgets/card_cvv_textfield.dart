@@ -28,6 +28,7 @@ class CardCVVTextField extends StatelessWidget {
       scrollPadding: const EdgeInsets.only(bottom: 220),
       validator: (value) {
         if (value == null) return "";
+        if (value.isEmpty) return "Required";
         final bool isValid = value.length == 3;
         if (!isValid) {
           return "CVV not valid";
