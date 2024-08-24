@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 class BasicCard extends StatelessWidget {
   const BasicCard({
     super.key,
-    required this.cardView,
+    this.cardView,
+    this.elevation = 10,
   });
-  final Widget cardView;
+  final Widget? cardView;
+  final double elevation;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +16,7 @@ class BasicCard extends StatelessWidget {
       height: 240,
       child: Card(
         clipBehavior: Clip.antiAlias,
-        elevation: 10,
+        elevation: elevation,
         child: cardView,
       ),
     );

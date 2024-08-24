@@ -1,20 +1,22 @@
 name: security
 description: A new Flutter project.
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.0
 
 environment:
-  sdk: '>=2.19.6 <3.0.0'
+  sdk: ">=3.4.1 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
   flutter_jailbreak_detection: ^1.10.0
+  flutter_secure_storage: ^9.2.2
   fluttertoast: ^8.2.8
   local_auth: ^2.1.6
   mask_text_input_formatter: ^2.9.0
   provider: ^6.1.2
   secure_application: ^4.0.1
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -25,4 +27,4 @@ flutter:
   uses-material-design: true
 
   assets:
-  - assets/
+    - assets/
