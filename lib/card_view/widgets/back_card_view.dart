@@ -29,28 +29,36 @@ class BackCardView extends StatelessWidget with CardTypeDetectorMixin {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
+            Text(
               "CVV/CVC",
-              style: TextStyle(fontSize: 20),
+              style: TextStyle(
+                fontSize: 20,
+                color: cardTextColor(card),
+              ),
             ),
             const SizedBox(width: 10),
             SizedBox(width: 100, child: buildCardCVV()),
           ],
         ),
-        const CardTypeAsset(),
+        CardTypeAsset(cardDetails: cardDetails),
       ],
     );
   }
 
   Widget buildCardCVV() {
+    final card = getCardType(cardDetails.cardNo);
     return TextFormField(
       controller: TextEditingController(text: cardDetails.cvv),
       readOnly: true,
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
         border: InputBorder.none,
         hintText: "XXX",
+        hintStyle: TextStyle(color: cardTextColor(card)),
       ),
-      style: const TextStyle(fontSize: 29),
+      style: TextStyle(
+        fontSize: 29,
+        color: cardTextColor(card),
+      ),
     );
   }
 }

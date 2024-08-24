@@ -41,7 +41,7 @@ class _CardExpiryTextFieldState extends State<CardExpiryTextField> {
         if (value.isEmpty) return "Required";
         final slashIndex = value.indexOf('/');
         final dateStr = value.substring(0, slashIndex);
-        final yearStr = value.substring(slashIndex, value.length - 1);
+        final yearStr = value.substring(slashIndex + 1, value.length);
         final bool isValid = isDateValid(dateStr) && isYearValid(yearStr);
         if (!isValid) {
           return "Expiry not valid";

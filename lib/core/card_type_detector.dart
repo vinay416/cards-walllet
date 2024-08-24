@@ -101,4 +101,15 @@ mixin CardTypeDetectorMixin {
     }
     return color;
   }
+
+  Color cardTextColor(CardType? type) {
+    Color color = Colors.black;
+    switch (type) {
+      case CardType.AmericanExpress:
+        color = Colors.white;
+        break;
+      default:
+    }
+    return color;
+  }
 }

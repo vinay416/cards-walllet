@@ -10,7 +10,8 @@ const _userCardsKey = "USER_CARDS";
 
 class CardsLocalStorage {
   CardsLocalStorage._();
-  factory CardsLocalStorage() => CardsLocalStorage._();
+  static final _instance = CardsLocalStorage._();
+  factory CardsLocalStorage() => _instance;
 
   final _storage = const FlutterSecureStorage(
     aOptions: AndroidOptions(encryptedSharedPreferences: true),
@@ -29,6 +30,34 @@ class CardsLocalStorage {
     } catch (e) {
       log("Card Keys ---> $e");
       return (false, e.toString());
+    }
+  }
+
+  Future<(List<CardDataModel>, int)> retriveCards({
+    int start = 1,
+  }) async {
+    const int offset = 10;
+    final int totalCards = _cardKeys.length;
+    List<CardDataModel> cardsList = [];
+    try {
+      final startOffset = (start - 1);
+      final int remainCards = totalCards - startOffset;
+      final bool isMore = remainCards > offset;
+      final int end = (isMore ? offset : remainCards) + startOffset;
+      for (int i = startOffset; i < end; i++) {
+        final cardNo = _cardKeys.values.elementAt(i);
+        final data = await _storage.read(key: cardNo);
+        if (data == null) {
+          log("Card No $cardNo data error");
+          continue;
+        }
+        final CardDataModel card = CardDataModel.fromJson(data);
+        cardsList.add(card);
+      }
+      return (cardsList, totalCards);
+    } catch (e) {
+      log("Cards fetcting failed start:$start error --> $e");
+      return (cardsList, totalCards);
     }
   }
 
@@ -69,34 +98,6 @@ class CardsLocalStorage {
     } catch (e) {
       log("Delete failed error --> $e");
       return (false, "Deleting failed");
-    }
-  }
-
-  Future<(List<CardDataModel>, int)> retriveCards({
-    int start = 1,
-  }) async {
-    const int offset = 10;
-    final int totalCards = _cardKeys.length;
-    List<CardDataModel> cardsList = [];
-    try {
-      final startOffset = (start - 1);
-      final int remainCards = totalCards - startOffset;
-      final bool isMore = remainCards > offset;
-      final int end = (isMore ? offset : remainCards) + startOffset;
-      for (int i = startOffset; i < end; i++) {
-        final cardNo = _cardKeys[i];
-        final data = await _storage.read(key: cardNo);
-        if (data == null) {
-          log("Card No $cardNo data error");
-          continue;
-        }
-        final CardDataModel card = CardDataModel.fromJson(data);
-        cardsList.add(card);
-      }
-      return (cardsList, totalCards);
-    } catch (e) {
-      log("Cards fetcting failed start:$start error --> $e");
-      return (cardsList, totalCards);
     }
   }
 

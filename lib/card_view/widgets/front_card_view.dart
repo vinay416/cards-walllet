@@ -40,7 +40,7 @@ class FrontCardView extends StatelessWidget with CardTypeDetectorMixin {
           children: [
             Expanded(child: buildCardName()),
             const SizedBox(width: 20),
-            const CardTypeAsset(),
+            CardTypeAsset(cardDetails: cardDetails),
           ],
         ),
       ],
@@ -48,43 +48,59 @@ class FrontCardView extends StatelessWidget with CardTypeDetectorMixin {
   }
 
   Widget buildCardNo() {
+    final card = getCardType(cardDetails.cardNo);
     return TextFormField(
       controller: TextEditingController(text: cardDetails.cardNo),
       readOnly: true,
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
         border: InputBorder.none,
         hintText: "XXXX XXXX XXXX XXXX",
+        hintStyle: TextStyle(color: cardTextColor(card)),
         isCollapsed: true,
       ),
-      style: const TextStyle(fontSize: 29),
+      style: TextStyle(
+        fontSize: 29,
+        color: cardTextColor(card),
+      ),
     );
   }
 
   Widget buildCardExpiry() {
+    final card = getCardType(cardDetails.cardNo);
     return TextFormField(
       controller: TextEditingController(text: cardDetails.expiry),
       readOnly: true,
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
         border: InputBorder.none,
         hintText: "XX/XXXX",
         isCollapsed: true,
+        hintStyle: TextStyle(color: cardTextColor(card)),
       ),
-      style: const TextStyle(fontSize: 20),
+      style: TextStyle(
+        fontSize: 20,
+        color: cardTextColor(card),
+      ),
     );
   }
 
   Widget buildCardName() {
+    final card = getCardType(cardDetails.cardNo);
+    final name = cardDetails.name.toUpperCase();
     return TextFormField(
-      controller: TextEditingController(text: cardDetails.name),
+      controller: TextEditingController(text: name),
       readOnly: true,
       maxLines: 2,
       minLines: 1,
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
         border: InputBorder.none,
         hintText: "XXXXXX XXXXXX",
         isCollapsed: true,
+        hintStyle: TextStyle(color: cardTextColor(card)),
       ),
-      style: const TextStyle(fontSize: 20),
+      style: TextStyle(
+        fontSize: 20,
+        color: cardTextColor(card),
+      ),
     );
   }
 

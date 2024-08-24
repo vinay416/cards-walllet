@@ -12,6 +12,7 @@ dependencies:
   flutter_jailbreak_detection: ^1.10.0
   flutter_secure_storage: ^9.2.2
   fluttertoast: ^8.2.8
+  loading_animations: ^2.2.0
   local_auth: ^2.1.6
   mask_text_input_formatter: ^2.9.0
   provider: ^6.1.2

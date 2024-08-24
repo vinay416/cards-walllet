@@ -1,11 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:security/card_view/card_view_animation.dart';
 import 'package:security/model/card_data_model.dart';
 import 'package:security/add_card/card_view.dart';
+import 'package:security/overlay/overlay_loader_mixin.dart';
 import 'package:security/view_model/cards_view_model.dart';
 
 import 'widgets/card_cvv_textfield.dart';
@@ -36,7 +35,7 @@ class AddCardView extends StatefulWidget {
   State<AddCardView> createState() => _AddCardViewState();
 }
 
-class _AddCardViewState extends State<AddCardView> {
+class _AddCardViewState extends State<AddCardView> with OverlayLoaderMixin {
   final formKey = GlobalKey<FormState>();
   final CardController cardController = CardController();
   late CardsViewModel vm;
@@ -54,11 +53,14 @@ class _AddCardViewState extends State<AddCardView> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
+      onTap: () {
+        FocusScope.of(context).unfocus();
+        showFront();
+      },
       child: FractionallySizedBox(
         heightFactor: 0.90,
         child: Padding(
-          padding: const EdgeInsets.all(20).copyWith(top: 5),
+          padding: const EdgeInsets.all(10).copyWith(top: 20),
           child: buildForm(),
         ),
       ),
@@ -70,7 +72,6 @@ class _AddCardViewState extends State<AddCardView> {
       key: formKey,
       child: Column(
         children: [
-          const SizedBox(height: 20),
           CardView(cardController: cardController),
           const SizedBox(height: 20),
           buildFields(),
@@ -86,7 +87,7 @@ class _AddCardViewState extends State<AddCardView> {
       flex: 5,
       child: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           child: Column(
             children: [
               CardNoTextField(onTap: showFront),
@@ -112,6 +113,7 @@ class _AddCardViewState extends State<AddCardView> {
 
   Widget buildLastRow() {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
           child: CardExpiryTextField(onTap: showFront),
@@ -138,22 +140,30 @@ class _AddCardViewState extends State<AddCardView> {
           backgroundColor: const WidgetStatePropertyAll(Colors.black),
           foregroundColor: const WidgetStatePropertyAll(Colors.white),
         ),
-        onPressed: () {
-          final isValid = formKey.currentState?.validate() ?? false;
-          if (!isValid) {
-            Fluttertoast.cancel();
-            Fluttertoast.showToast(msg: "Invaild detials");
-            return;
-          }
-          vm.addCard(vm.newCard);
-          Fluttertoast.showToast(msg: "Card saved");
-          Navigator.pop(context);
-        },
+        onPressed: onTap,
         child: const Text(
           "Validate",
           style: TextStyle(fontSize: 17),
         ),
       ),
     );
+  }
+
+  void onTap() async {
+    showFront();
+    final isValid = formKey.currentState?.validate() ?? false;
+    if (!isValid) {
+      Fluttertoast.cancel();
+      Fluttertoast.showToast(msg: "Invaild detials");
+      return;
+    }
+    showFullLoader(context);
+    final (success, _) = await vm.addCard(vm.newCard);
+    Fluttertoast.showToast(
+      msg: success ? "Card saved" : "Card save failed",
+    );
+    hideFullLoader();
+    if (!success) return;
+    Navigator.pop(context);
   }
 }
