@@ -135,11 +135,24 @@ class CardsViewModel with ChangeNotifier {
     }
   }
 
+  //* Edit mode all cards
+
   bool _isEditMode = false;
   bool get isEditMode => _isEditMode;
 
   void setCardsEditMode() {
     _isEditMode = !_isEditMode;
+    notifyListeners();
+  }
+
+  void onReorder(int oldIndex, int newIndex) {
+    if (newIndex > oldIndex) {
+      newIndex -= 1;
+    }
+    final tempCards = [..._cards];
+    final item = tempCards.removeAt(oldIndex);
+    tempCards.insert(newIndex, item);
+    _cards = [...tempCards];
     notifyListeners();
   }
 }
