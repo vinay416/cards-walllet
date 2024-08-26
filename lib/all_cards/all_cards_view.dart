@@ -46,10 +46,13 @@ class _AllCardsViewState extends State<AllCardsView> {
         if (loading) return const SizedBox.shrink();
 
         return FloatingActionButton.extended(
-          shape: const StadiumBorder(),
-          onPressed: () {
-            AddCard.newCard(context);
-          },
+          shape: StadiumBorder(
+            side: BorderSide(
+              color: Colors.blue[600]!,
+              width: 2.5,
+            ),
+          ),
+          onPressed: () => AddCard.newCard(context),
           label: const Text(
             "Add",
             style: TextStyle(fontSize: 18),

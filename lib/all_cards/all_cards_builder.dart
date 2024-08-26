@@ -13,7 +13,7 @@ class AllCardsBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
       physics: const BouncingScrollPhysics(),
-      padding: const EdgeInsets.symmetric(vertical: 15),
+      padding: const EdgeInsets.only(top: 15, bottom: 80),
       itemCount: cards.length,
       itemBuilder: (context, index) {
         return Padding(

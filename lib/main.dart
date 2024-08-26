@@ -25,12 +25,13 @@ class MainApp extends StatelessWidget {
       create: (context) => CardsViewModel(),
       child: MaterialApp(
         theme: ThemeData(
-          colorScheme: const ColorScheme.light(primary: Colors.brown),
+          colorScheme: const ColorScheme.light(primary: Colors.black),
         ),
         darkTheme: ThemeData(
-          colorScheme: const ColorScheme.dark(primary: Colors.brown),
+          colorScheme: const ColorScheme.dark(primary: Colors.white),
         ),
         home: const AllCardsView(),
+        debugShowCheckedModeBanner: false,
         builder: (context, child) {
           return SecureApplication(
             child: child!,

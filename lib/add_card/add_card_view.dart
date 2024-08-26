@@ -182,6 +182,7 @@ class _AddCardViewState extends State<AddCardView> with OverlayLoaderMixin {
     }
     showFullLoader(context);
     final (success, _) = await vm.addCard(vm.newCard);
+    await Future.delayed(Durations.long2);
     Fluttertoast.showToast(
       msg: success ? "Card saved" : "Card save failed",
     );
