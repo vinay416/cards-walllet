@@ -1,25 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:security/add_card/widgets/card_validate_button.dart';
+import 'package:security/add_card/widgets/cards_form_fields.dart';
 import 'package:security/card_view/card_view_animation.dart';
 import 'package:security/model/card_data_model.dart';
-import 'package:security/add_card/card_view.dart';
+import 'package:security/add_card/widgets/card_view.dart';
 import 'package:security/overlay/overlay_loader_mixin.dart';
 import 'package:security/view_model/cards_view_model.dart';
 
-import 'widgets/card_cvv_textfield.dart';
-import 'widgets/card_expiry_textfield.dart';
-import 'widgets/card_issued_by_textfield.dart';
-import 'widgets/card_name_textfield.dart';
-import 'widgets/card_no_textfield.dart';
-
 class AddCard {
-  static void newCard(BuildContext context) {
+  static void showDialog(
+    BuildContext context, {
+    CardDataModel? cardDetails,
+  }) {
     showModalBottomSheet(
       isScrollControlled: true,
       shape: RoundedRectangleBorder(borderRadius: borderShape),
       context: context,
-      builder: (context) => const AddCardView(),
+      builder: (context) => AddCardView(cardDetails: cardDetails),
     );
   }
 
@@ -30,7 +29,8 @@ class AddCard {
 }
 
 class AddCardView extends StatefulWidget {
-  const AddCardView({super.key});
+  const AddCardView({super.key, this.cardDetails});
+  final CardDataModel? cardDetails;
 
   @override
   State<AddCardView> createState() => _AddCardViewState();
@@ -45,7 +45,7 @@ class _AddCardViewState extends State<AddCardView> with OverlayLoaderMixin {
   void initState() {
     super.initState();
     vm = context.read<CardsViewModel>();
-    vm.newCard = CardDataModel.empty();
+    vm.editCardDetails = widget.cardDetails ?? CardDataModel.empty();
   }
 
   void showFront() => cardController.reverse();
@@ -73,102 +73,29 @@ class _AddCardViewState extends State<AddCardView> with OverlayLoaderMixin {
       key: formKey,
       child: Column(
         children: [
-          CardView(cardController: cardController),
+          buildPreviewCard(),
           const SizedBox(height: 20),
-          buildFields(),
+          CardsFormFields(
+            cardDetails: vm.editCardDetails,
+            showBack: showBack,
+            showFront: showFront,
+          ),
           const Spacer(),
-          buildValidateButton(),
+          CardValidateButton(onTap: onTap),
         ],
       ),
     );
   }
 
-  Widget buildFields() {
-    return Expanded(
-      flex: 5,
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Column(
-            children: [
-              CardIssuedByTextField(onTap: showFront),
-              const SizedBox(height: 20),
-              build1stRow(),
-              const SizedBox(height: 20),
-              build2ndRow(),
-              const SizedBox(height: 20),
-              buildButtonSpace(),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget build1stRow() {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-          flex: 4,
-          child: CardNoTextField(onTap: showFront),
-        ),
-        const SizedBox(width: 10),
-        Expanded(
-          flex: 2,
-          child: CardExpiryTextField(onTap: showFront),
-        ),
-      ],
-    );
-  }
-
-  Widget build2ndRow() {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-          flex: 3,
-          child: CardNameTextField(onTap: showFront),
-        ),
-        const SizedBox(width: 10),
-        Expanded(
-          child: CardCVVTextField(onTap: showBack),
-        ),
-      ],
-    );
-  }
-
-  Widget buildButtonSpace() {
-    final bottom = MediaQuery.of(context).viewInsets.bottom;
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 300),
-      height: (bottom != 0) ? 400 : 0,
-    );
-  }
-
-  Widget buildValidateButton() {
-    return SizedBox(
-      width: double.infinity,
-      height: 50,
-      child: ElevatedButton(
-        style: ButtonStyle(
-          shape: WidgetStatePropertyAll(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(5),
-              side: const BorderSide(
-                color: Colors.grey,
-              ),
-            ),
-          ),
-          backgroundColor: const WidgetStatePropertyAll(Colors.black),
-          foregroundColor: const WidgetStatePropertyAll(Colors.white),
-        ),
-        onPressed: onTap,
-        child: const Text(
-          "Validate",
-          style: TextStyle(fontSize: 17),
-        ),
-      ),
+  Widget buildPreviewCard() {
+    return Selector<CardsViewModel, CardDataModel>(
+      selector: (p0, p1) => p1.editCardDetails,
+      builder: (context, data, _) {
+        return CardView(
+          cardController: cardController,
+          data: data,
+        );
+      },
     );
   }
 
@@ -181,13 +108,29 @@ class _AddCardViewState extends State<AddCardView> with OverlayLoaderMixin {
       return;
     }
     showFullLoader(context);
-    final (success, _) = await vm.addCard(vm.newCard);
+    final bool isAddingCard = widget.cardDetails == null;
+    final success = isAddingCard ? await addCard() : await updateCard();
+    hideFullLoader();
+    if (!success) return;
+    if (!mounted) return;
+    Navigator.pop(context);
+  }
+
+  Future<bool> addCard() async {
+    final (success, _) = await vm.addCard(vm.editCardDetails);
     await Future.delayed(Durations.long2);
     Fluttertoast.showToast(
       msg: success ? "Card saved" : "Card save failed",
     );
-    hideFullLoader();
-    if (!success) return;
-    Navigator.pop(context);
+    return success;
+  }
+
+  Future<bool> updateCard() async {
+    final (success, _) = await vm.updateCard(vm.editCardDetails);
+    await Future.delayed(Durations.long2);
+    Fluttertoast.showToast(
+      msg: success ? "Card updated" : "Card updation failed",
+    );
+    return success;
   }
 }

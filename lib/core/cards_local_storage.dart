@@ -78,6 +78,22 @@ class CardsLocalStorage {
     }
   }
 
+   Future<(bool success, String? error)> updateCard(CardDataModel card) async {
+    try {
+      final cardNoKey = card.cardNo;
+      final cardData = card.toJson();
+      // if not exist
+      if (!_cardKeyExist(cardNoKey)) {
+        throw ErrorDescription("Card Key not exist $cardNoKey");
+      }
+      await _storage.write(key: cardNoKey, value: cardData);
+      return (true, null);
+    } catch (e) {
+      log("Updating failed error --> $e");
+      return (false, "Updating failed");
+    }
+  }
+
   Future<(bool success, String? error)> removeCard(CardDataModel card) async {
     try {
       final cardNoKey = card.cardNo;

@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:provider/provider.dart';
+import 'package:security/model/card_data_model.dart';
 import 'package:security/view_model/cards_view_model.dart';
 
 class CardExpiryTextField extends StatefulWidget {
-  const CardExpiryTextField({super.key, required this.onTap});
+  const CardExpiryTextField({
+    super.key,
+    required this.onTap,
+    required this.cardDetails,
+  });
   final VoidCallback onTap;
+  final CardDataModel cardDetails;
 
   @override
   State<CardExpiryTextField> createState() => _CardExpiryTextFieldState();
@@ -23,6 +29,7 @@ class _CardExpiryTextFieldState extends State<CardExpiryTextField> {
     final vm = context.read<CardsViewModel>();
 
     return TextFormField(
+      initialValue: widget.cardDetails.expiry,
       onTap: widget.onTap,
       style: const TextStyle(fontSize: 20),
       inputFormatters: [
@@ -35,7 +42,7 @@ class _CardExpiryTextFieldState extends State<CardExpiryTextField> {
       ),
       scrollPadding: const EdgeInsets.only(bottom: 220),
       onChanged: (value) {
-        final details = vm.newCard.copyWith(expiry: value);
+        final details = widget.cardDetails.copyWith(expiry: value);
         vm.updateNewCard(details);
       },
       validator: (value) {

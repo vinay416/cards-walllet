@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
+import 'package:security/add_card/add_card_view.dart';
 import 'package:security/all_cards/all_cards_builder.dart';
 import 'package:security/model/card_data_model.dart';
 import 'package:security/overlay/overlay_loader_mixin.dart';
@@ -28,7 +29,7 @@ class EditModeCardsBuilder extends StatelessWidget with OverlayLoaderMixin {
             hideFullLoader();
           },
           onEdit: () {
-            
+            AddCard.showDialog(context, cardDetails: card);
           },
         );
       },

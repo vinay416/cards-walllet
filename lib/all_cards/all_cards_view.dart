@@ -76,7 +76,7 @@ class _AllCardsViewState extends State<AllCardsView> {
               width: 2.5,
             ),
           ),
-          onPressed: () => AddCard.newCard(context),
+          onPressed: () => AddCard.showDialog(context),
           label: const Text(
             "Add",
             style: TextStyle(fontSize: 18),

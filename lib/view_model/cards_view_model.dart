@@ -7,9 +7,9 @@ import 'package:security/model/card_data_model.dart';
 import '../core/cards_local_storage.dart';
 
 class CardsViewModel with ChangeNotifier {
-  CardDataModel newCard = CardDataModel.empty();
+  CardDataModel editCardDetails = CardDataModel.empty();
   void updateNewCard(CardDataModel details) {
-    newCard = details;
+    editCardDetails = details;
     notifyListeners();
   }
 
@@ -79,14 +79,6 @@ class CardsViewModel with ChangeNotifier {
     }
   }
 
-  bool _fullLoader = false;
-  bool get fullLoader => _fullLoader;
-
-  void _setFullLoader(bool status) {
-    _fullLoader = status;
-    notifyListeners();
-  }
-
   Future<(bool success, String? error)> addCard(
     CardDataModel card,
   ) async {
@@ -96,17 +88,41 @@ class CardsViewModel with ChangeNotifier {
         log("Card already added ${card.toJson()}");
         return (false, "Card already added");
       }
-      _setFullLoader(true);
+
       final (success, error) = await CardsLocalStorage().saveCard(card);
       if (error != null) throw ErrorDescription(error);
-
       _cards = [..._cards, card];
       _totalCards++;
-      _setFullLoader(false);
+      notifyListeners();
       return (success, null);
     } catch (e) {
       log("Add Card Error ----> $e");
-      _setFullLoader(false);
+      return (false, e.toString());
+    }
+  }
+
+  Future<(bool success, String? error)> updateCard(
+    CardDataModel card,
+  ) async {
+    try {
+      final notExist = _cards.where((e) => e.cardNo == card.cardNo).isEmpty;
+      if (notExist) {
+        log("Card not exist ${card.toJson()}");
+        return (false, "Card not exist");
+      }
+      final (success, error) = await CardsLocalStorage().updateCard(card);
+      if (error != null) throw ErrorDescription(error);
+
+      final tempCards = [..._cards];
+      final index = tempCards.indexWhere((e) => e.cardNo == card.cardNo);
+      if (index == -1) throw ErrorDescription("local list index $index");
+      tempCards.removeAt(index);
+      tempCards.insert(index, card);
+      _cards = [...tempCards];
+      notifyListeners();
+      return (success, null);
+    } catch (e) {
+      log("Add Card Error ----> $e");
       return (false, e.toString());
     }
   }
@@ -119,18 +135,16 @@ class CardsViewModel with ChangeNotifier {
       if (!exist) {
         throw ErrorDescription("Card not exist");
       }
-      _setFullLoader(true);
       final (success, error) = await CardsLocalStorage().removeCard(card);
       if (error != null) throw ErrorDescription(error);
 
       _cards.remove(card);
       _cards = [...cards];
       _totalCards--;
-      _setFullLoader(false);
+      notifyListeners();
       return (success, null);
     } catch (e) {
       log("Delete card error ---> $e");
-      _setFullLoader(false);
       return (false, e.toString());
     }
   }

@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:security/model/card_data_model.dart';
 import 'package:security/view_model/cards_view_model.dart';
 
 class CardNameTextField extends StatelessWidget {
-  const CardNameTextField({super.key, required this.onTap});
+  const CardNameTextField({super.key, required this.onTap, required this.cardDetails,});
   final VoidCallback onTap;
+  final CardDataModel cardDetails;
 
   @override
   Widget build(BuildContext context) {
     final vm = context.read<CardsViewModel>();
 
     return TextFormField(
+      initialValue: cardDetails.name,
       onTap: onTap,
       style: const TextStyle(fontSize: 20),
       inputFormatters: [
@@ -24,7 +27,7 @@ class CardNameTextField extends StatelessWidget {
       ),
       scrollPadding: const EdgeInsets.only(bottom: 220),
       onChanged: (value) {
-        final details = vm.newCard.copyWith(name: value);
+        final details = cardDetails.copyWith(name: value);
         vm.updateNewCard(details);
       },
       validator: (value) {
