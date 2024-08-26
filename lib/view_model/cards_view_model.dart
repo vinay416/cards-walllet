@@ -134,4 +134,12 @@ class CardsViewModel with ChangeNotifier {
       return (false, e.toString());
     }
   }
+
+  bool _isEditMode = false;
+  bool get isEditMode => _isEditMode;
+
+  void setCardsEditMode() {
+    _isEditMode = !_isEditMode;
+    notifyListeners();
+  }
 }

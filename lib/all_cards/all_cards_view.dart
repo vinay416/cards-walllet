@@ -16,10 +16,13 @@ class AllCardsView extends StatefulWidget {
 }
 
 class _AllCardsViewState extends State<AllCardsView> {
+  late CardsViewModel vm;
+
   @override
   void initState() {
     super.initState();
-    context.read<CardsViewModel>().fetchUserCards();
+    vm = context.read<CardsViewModel>();
+    vm.fetchUserCards();
   }
 
   @override
@@ -34,9 +37,30 @@ class _AllCardsViewState extends State<AllCardsView> {
             fontSize: 24,
           ),
         ),
+        actions: [
+          buildAppbarAction(),
+          const SizedBox(width: 10),
+        ],
       ),
       body: buildCards(),
       floatingActionButton: buildFAB(context),
+    );
+  }
+
+  Widget buildAppbarAction() {
+    return Selector<CardsViewModel, bool>(
+      builder: (context, isEditMode, child) {
+        return TextButton(
+          onPressed: vm.setCardsEditMode,
+          child: isEditMode
+              ? const Text(
+                  "Cancel",
+                  style: TextStyle(color: Colors.red, fontSize: 16),
+                )
+              : const Icon(Icons.edit_square, color: Colors.blue),
+        );
+      },
+      selector: (p0, p1) => p1.isEditMode,
     );
   }
 

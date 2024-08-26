@@ -70,7 +70,6 @@ class FrontCardView extends StatelessWidget with CardTypeDetectorMixin {
     return TextFormField(
       controller: TextEditingController(text: issuedBy),
       readOnly: true,
-    
       decoration: InputDecoration(
         border: InputBorder.none,
         hintStyle: TextStyle(color: cardTextColor(card)),
@@ -98,7 +97,7 @@ class FrontCardView extends StatelessWidget with CardTypeDetectorMixin {
         isCollapsed: true,
       ),
       style: TextStyle(
-        fontSize: 29,
+        fontSize: 28,
         fontWeight: FontWeight.w500,
         color: cardTextColor(card),
       ),
