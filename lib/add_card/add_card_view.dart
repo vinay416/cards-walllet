@@ -75,15 +75,24 @@ class _AddCardViewState extends State<AddCardView> with OverlayLoaderMixin {
         children: [
           buildPreviewCard(),
           const SizedBox(height: 20),
-          CardsFormFields(
-            cardDetails: vm.editCardDetails,
-            showBack: showBack,
-            showFront: showFront,
-          ),
+          buildFormFields(),
           const Spacer(),
           CardValidateButton(onTap: onTap),
         ],
       ),
+    );
+  }
+
+  Widget buildFormFields() {
+    return Selector<CardsViewModel, CardDataModel>(
+      selector: (p0, p1) => p1.editCardDetails,
+      builder: (context, cardDetails, child) {
+        return CardsFormFields(
+          cardDetails: vm.editCardDetails,
+          showBack: showBack,
+          showFront: showFront,
+        );
+      },
     );
   }
 
