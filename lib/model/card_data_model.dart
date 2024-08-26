@@ -6,11 +6,12 @@ class CardDataModel {
   final String expiry;
   final String name;
   final String cvv;
+  final String? issuedBy;
   const CardDataModel({
     required this.cardNo,
     required this.expiry,
     required this.name,
-    required this.cvv,
+    required this.cvv,this.issuedBy,
   });
 
   Map<String, dynamic> toMap() {
@@ -19,6 +20,7 @@ class CardDataModel {
       'expiry': expiry,
       'name': name,
       'cvv': cvv,
+      'issuedBy': issuedBy ?? "",
     };
   }
 
@@ -28,6 +30,7 @@ class CardDataModel {
       expiry: map['expiry'] as String,
       name: map['name'] as String,
       cvv: map['cvv'] as String,
+      issuedBy: map["issuedBy"] ?? "",
     );
   }
 
@@ -37,6 +40,7 @@ class CardDataModel {
       expiry: "",
       name: "",
       cvv: "",
+      issuedBy: "",
     );
   }
 
@@ -51,12 +55,14 @@ class CardDataModel {
     String? expiry,
     String? name,
     String? cvv,
+    String? issuedBy,
   }) {
     return CardDataModel(
       cardNo: cardNo ?? this.cardNo,
       expiry: expiry ?? this.expiry,
       name: name ?? this.name,
       cvv: cvv ?? this.cvv,
+      issuedBy: issuedBy ?? this.issuedBy ?? ""
     );
   }
 }

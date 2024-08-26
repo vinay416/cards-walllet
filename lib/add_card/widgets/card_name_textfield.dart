@@ -13,13 +13,16 @@ class CardNameTextField extends StatelessWidget {
 
     return TextFormField(
       onTap: onTap,
+      style: const TextStyle(fontSize: 20),
       inputFormatters: [
         FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
       ],
       decoration: const InputDecoration(
         border: OutlineInputBorder(),
         hintText: "Name",
+        contentPadding: EdgeInsets.all(12),
       ),
+      scrollPadding: const EdgeInsets.only(bottom: 220),
       onChanged: (value) {
         final details = vm.newCard.copyWith(name: value);
         vm.updateNewCard(details);

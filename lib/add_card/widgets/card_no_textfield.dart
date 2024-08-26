@@ -23,6 +23,7 @@ class _CardNoTextFieldState extends State<CardNoTextField> {
     final vm = context.read<CardsViewModel>();
     return TextFormField(
       onTap: widget.onTap,
+      style: const TextStyle(fontSize: 20),
       inputFormatters: [
         maskFormatter,
       ],
@@ -33,6 +34,7 @@ class _CardNoTextFieldState extends State<CardNoTextField> {
       decoration: const InputDecoration(
         border: OutlineInputBorder(),
         hintText: "Card Number",
+        contentPadding: EdgeInsets.all(12),
       ),
       validator: (value) {
         if (value == null) return null;

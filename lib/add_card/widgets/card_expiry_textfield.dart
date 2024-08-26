@@ -24,12 +24,14 @@ class _CardExpiryTextFieldState extends State<CardExpiryTextField> {
 
     return TextFormField(
       onTap: widget.onTap,
+      style: const TextStyle(fontSize: 20),
       inputFormatters: [
         maskFormatter,
       ],
       decoration: const InputDecoration(
         border: OutlineInputBorder(),
         hintText: "Expiry",
+        contentPadding: EdgeInsets.all(12),
       ),
       scrollPadding: const EdgeInsets.only(bottom: 220),
       onChanged: (value) {

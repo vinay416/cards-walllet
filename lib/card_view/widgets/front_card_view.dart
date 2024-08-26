@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:security/card_view/widgets/card_type_asset.dart';
 import 'package:security/core/card_type_detector.dart';
@@ -15,11 +16,11 @@ class FrontCardView extends StatelessWidget with CardTypeDetectorMixin {
     return Container(
       color: color,
       padding: const EdgeInsets.all(20.0),
-      child: buildBody(),
+      child: buildBody(card),
     );
   }
 
-  Column buildBody() {
+  Column buildBody(CardType? card) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -28,12 +29,28 @@ class FrontCardView extends StatelessWidget with CardTypeDetectorMixin {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             buildCardChip(),
+            const SizedBox(width: 20),
+            Flexible(child: buildIssuedBy()),
+            const SizedBox(width: 30),
             buildTapAsset(),
           ],
         ),
         const SizedBox(height: 10),
         buildCardNo(),
-        buildCardExpiry(),
+        Row(
+          children: [
+            Text(
+              "EXPIRY",
+              style: TextStyle(
+                color: cardTextColor(card),
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(width: 10),
+            Flexible(child: buildCardExpiry()),
+          ],
+        ),
         const Spacer(),
         Row(
           crossAxisAlignment: CrossAxisAlignment.end,
@@ -44,6 +61,28 @@ class FrontCardView extends StatelessWidget with CardTypeDetectorMixin {
           ],
         ),
       ],
+    );
+  }
+
+  Widget buildIssuedBy() {
+    final card = getCardType(cardDetails.cardNo);
+    final issuedBy = cardDetails.issuedBy?.toUpperCase();
+    return TextFormField(
+      controller: TextEditingController(text: issuedBy),
+      readOnly: true,
+    
+      decoration: InputDecoration(
+        border: InputBorder.none,
+        hintStyle: TextStyle(color: cardTextColor(card)),
+        isCollapsed: true,
+      ),
+      textAlign: TextAlign.center,
+      style: TextStyle(
+        fontSize: 25,
+        fontWeight: FontWeight.w700,
+        color: cardTextColor(card),
+        overflow: TextOverflow.clip,
+      ),
     );
   }
 
@@ -60,6 +99,7 @@ class FrontCardView extends StatelessWidget with CardTypeDetectorMixin {
       ),
       style: TextStyle(
         fontSize: 29,
+        fontWeight: FontWeight.w500,
         color: cardTextColor(card),
       ),
     );
@@ -78,6 +118,7 @@ class FrontCardView extends StatelessWidget with CardTypeDetectorMixin {
       ),
       style: TextStyle(
         fontSize: 20,
+        fontWeight: FontWeight.w600,
         color: cardTextColor(card),
       ),
     );
@@ -99,6 +140,7 @@ class FrontCardView extends StatelessWidget with CardTypeDetectorMixin {
       ),
       style: TextStyle(
         fontSize: 20,
+        fontWeight: FontWeight.w600,
         color: cardTextColor(card),
       ),
     );

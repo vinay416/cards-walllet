@@ -9,6 +9,7 @@ import 'package:security/view_model/cards_view_model.dart';
 
 import 'widgets/card_cvv_textfield.dart';
 import 'widgets/card_expiry_textfield.dart';
+import 'widgets/card_issued_by_textfield.dart';
 import 'widgets/card_name_textfield.dart';
 import 'widgets/card_no_textfield.dart';
 
@@ -16,16 +17,16 @@ class AddCard {
   static void newCard(BuildContext context) {
     showModalBottomSheet(
       isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
-        ),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: borderShape),
       context: context,
       builder: (context) => const AddCardView(),
     );
   }
+
+  static get borderShape => const BorderRadius.only(
+        topLeft: Radius.circular(20),
+        topRight: Radius.circular(20),
+      );
 }
 
 class AddCardView extends StatefulWidget {
@@ -58,7 +59,7 @@ class _AddCardViewState extends State<AddCardView> with OverlayLoaderMixin {
         showFront();
       },
       child: FractionallySizedBox(
-        heightFactor: 0.90,
+        heightFactor: 0.92,
         child: Padding(
           padding: const EdgeInsets.all(10).copyWith(top: 20),
           child: buildForm(),
@@ -90,11 +91,12 @@ class _AddCardViewState extends State<AddCardView> with OverlayLoaderMixin {
           padding: const EdgeInsets.all(10),
           child: Column(
             children: [
-              CardNoTextField(onTap: showFront),
+              CardIssuedByTextField(onTap: showFront),
               const SizedBox(height: 20),
-              CardNameTextField(onTap: showFront),
+              build1stRow(),
               const SizedBox(height: 20),
-              buildLastRow(),
+              build2ndRow(),
+              const SizedBox(height: 20),
               buildButtonSpace(),
             ],
           ),
@@ -103,26 +105,44 @@ class _AddCardViewState extends State<AddCardView> with OverlayLoaderMixin {
     );
   }
 
+  Widget build1stRow() {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          flex: 4,
+          child: CardNoTextField(onTap: showFront),
+        ),
+        const SizedBox(width: 10),
+        Expanded(
+          flex: 2,
+          child: CardExpiryTextField(onTap: showFront),
+        ),
+      ],
+    );
+  }
+
+  Widget build2ndRow() {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          flex: 3,
+          child: CardNameTextField(onTap: showFront),
+        ),
+        const SizedBox(width: 10),
+        Expanded(
+          child: CardCVVTextField(onTap: showBack),
+        ),
+      ],
+    );
+  }
+
   Widget buildButtonSpace() {
     final bottom = MediaQuery.of(context).viewInsets.bottom;
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       height: (bottom != 0) ? 400 : 0,
-    );
-  }
-
-  Widget buildLastRow() {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-          child: CardExpiryTextField(onTap: showFront),
-        ),
-        const SizedBox(width: 20),
-        Expanded(
-          child: CardCVVTextField(onTap: showBack),
-        ),
-      ],
     );
   }
 
@@ -135,6 +155,9 @@ class _AddCardViewState extends State<AddCardView> with OverlayLoaderMixin {
           shape: WidgetStatePropertyAll(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(5),
+              side: const BorderSide(
+                color: Colors.grey,
+              ),
             ),
           ),
           backgroundColor: const WidgetStatePropertyAll(Colors.black),
