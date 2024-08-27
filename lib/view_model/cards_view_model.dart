@@ -91,7 +91,7 @@ class CardsViewModel with ChangeNotifier {
 
       final (success, error) = await CardsLocalStorage().saveCard(card);
       if (error != null) throw ErrorDescription(error);
-      _cards = [..._cards, card];
+      _cards = [card, ..._cards];
       _totalCards++;
       notifyListeners();
       return (success, null);
@@ -122,7 +122,7 @@ class CardsViewModel with ChangeNotifier {
       notifyListeners();
       return (success, null);
     } catch (e) {
-      log("Add Card Error ----> $e");
+      log("Update Card Error ----> $e");
       return (false, e.toString());
     }
   }

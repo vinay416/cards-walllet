@@ -45,36 +45,41 @@ class _CardViewAnimationState extends State<CardViewAnimation>
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onHorizontalDragUpdate: onHorizontalDragUpdate,
-      child: AnimatedBuilder(
-        animation: rotateAnimation,
-        builder: (context, child) {
-          final angle = math.pi * rotateAnimation.value;
-          final isFront = setCardView(angle);
-          return Transform(
-            transform: Matrix4.identity()
-              ..setEntry(3, 2, 0.001)
-              ..rotateY(angle),
-            alignment: Alignment.center,
-            child: isFront
-                ? widget.front
-                : Transform(
-                    transform: Matrix4.identity()..rotateY(math.pi),
-                    alignment: Alignment.center,
-                    child: widget.back,
-                  ),
-          );
-        },
-      ),
+    return AnimatedBuilder(
+      animation: rotateAnimation,
+      builder: (context, child) {
+        final angle = math.pi * rotateAnimation.value;
+        final isFront = setCardView(angle);
+        return Stack(
+          children: [
+            Transform(
+              transform: Matrix4.identity()
+                ..setEntry(3, 2, 0.001)
+                ..rotateY(angle),
+              alignment: Alignment.center,
+              child: isFront
+                  ? widget.front
+                  : Transform(
+                      transform: Matrix4.identity()..rotateY(math.pi),
+                      alignment: Alignment.center,
+                      child: widget.back,
+                    ),
+            ),
+            Positioned.fill(
+              child: GestureDetector(
+                onTap: onTap,
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 
-  void onHorizontalDragUpdate(DragUpdateDetails details) {
+  void onTap() {
     if (!widget.enableGesture) return;
-    final dx = details.delta.dx;
     if (animationcontroller.isAnimating) return;
-    if (dx >= 0) {
+    if (animationcontroller.isCompleted) {
       animationcontroller.reverse();
     } else {
       animationcontroller.forward();
