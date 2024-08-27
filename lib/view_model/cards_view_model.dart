@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/widgets.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:security/model/card_data_model.dart';
 
 import '../core/cards_local_storage.dart';
@@ -159,13 +160,18 @@ class CardsViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void onReorder(int oldIndex, int newIndex) {
+  void onReorder(int oldIndex, int newIndex) async {
     if (newIndex > oldIndex) {
       newIndex -= 1;
     }
     final tempCards = [..._cards];
     final item = tempCards.removeAt(oldIndex);
     tempCards.insert(newIndex, item);
+    final (success, _) = await CardsLocalStorage().reorderCardKeys(tempCards);
+    if (!success) {
+      Fluttertoast.showToast(msg: "Reorder Cards failed");
+      return;
+    }
     _cards = [...tempCards];
     notifyListeners();
   }

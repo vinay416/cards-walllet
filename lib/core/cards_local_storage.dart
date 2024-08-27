@@ -78,7 +78,7 @@ class CardsLocalStorage {
     }
   }
 
-   Future<(bool success, String? error)> updateCard(CardDataModel card) async {
+  Future<(bool success, String? error)> updateCard(CardDataModel card) async {
     try {
       final cardNoKey = card.cardNo;
       final cardData = card.toJson();
@@ -119,5 +119,22 @@ class CardsLocalStorage {
 
   bool _cardKeyExist(String cardNo) {
     return _cardKeys.containsKey(cardNo);
+  }
+
+  Future<(bool success, String? error)> reorderCardKeys(
+    List<CardDataModel> cardsList,
+  ) async {
+    try {
+      _cardKeys.clear();
+      for (var element in cardsList) {
+        final cardNoKey = element.cardNo;
+        _cardKeys.addAll({cardNoKey: cardNoKey});
+      }
+      await _storage.write(key: _userCardsKey, value: jsonEncode(_cardKeys));
+      return (true, null);
+    } catch (e) {
+      log("Reorder Keys ---> $e");
+      return (false, e.toString());
+    }
   }
 }
