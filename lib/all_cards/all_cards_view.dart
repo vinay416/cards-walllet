@@ -18,11 +18,13 @@ class AllCardsView extends StatefulWidget {
 
 class _AllCardsViewState extends State<AllCardsView> {
   late CardsViewModel vm;
+  final ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     vm = context.read<CardsViewModel>();
+    vm.paginateCards(scrollController);
     vm.fetchUserCards();
   }
 
@@ -97,6 +99,8 @@ class _AllCardsViewState extends State<AllCardsView> {
         if (initialLoading) return const ShimmerAllCards();
         if (cards.isEmpty) return const EmptyAllCards();
         return CustomScrollView(
+          controller: scrollController,
+          physics: const BouncingScrollPhysics(),
           slivers: [
             SliverToBoxAdapter(
               child: AllCardsBuilder(cards: cards),
@@ -109,5 +113,11 @@ class _AllCardsViewState extends State<AllCardsView> {
       },
       selector: (p0, p1) => (p1.cards, p1.initialLoading),
     );
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
   }
 }

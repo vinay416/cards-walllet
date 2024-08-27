@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:security/model/card_data_model.dart';
 
@@ -57,9 +57,23 @@ class CardsViewModel with ChangeNotifier {
 
   bool get allCardsLoaded => _cards.length == _totalCards;
 
-  Future<bool> paginateUserCards() async {
+  void paginateCards(ScrollController controller) {
+    controller.addListener(
+      () async {
+        if (allCardsLoaded) return;
+        if (paginating) return;
+        final pos = controller.position.pixels;
+        final triggerPos = controller.position.maxScrollExtent - 100;
+        if (pos < triggerPos) return;
+        await _paginateUserCards();
+      },
+    );
+  }
+
+  Future<void> _paginateUserCards() async {
     try {
       _setPaginatingLoading(true);
+      await Future.delayed(Durations.long4);
       final start = _cards.length + 1;
       final (list, totalCount) = await CardsLocalStorage().retriveCards(
         start: start,
@@ -72,11 +86,9 @@ class CardsViewModel with ChangeNotifier {
       _cards = [..._cards, ...list];
       _totalCards = totalCount;
       _setPaginatingLoading(false);
-      return true;
     } catch (e) {
       log("Cards pagination error ---> $e");
       _setPaginatingLoading(false);
-      return false;
     }
   }
 
