@@ -19,8 +19,9 @@ class AllCardsBuilder extends StatelessWidget {
         if (isEditMode) return EditModeCardsBuilder(cards: cards);
 
         return ListView.builder(
+          shrinkWrap: true,
           physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.only(top: 15, bottom: 80),
+          padding: const EdgeInsets.symmetric(vertical: 20),
           itemCount: cards.length,
           itemBuilder: (context, index) {
             return Padding(

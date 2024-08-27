@@ -18,7 +18,7 @@ class EditModeCardsBuilder extends StatelessWidget with OverlayLoaderMixin {
 
     return ReorderableListView.builder(
       physics: const BouncingScrollPhysics(),
-      padding: const EdgeInsets.only(top: 15, bottom: 80),
+      padding: const EdgeInsets.symmetric(vertical: 20),
       itemBuilder: (context, index) {
         final card = cards[index];
         return SlidableCardItem(

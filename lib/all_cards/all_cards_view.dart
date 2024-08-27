@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:security/add_card/add_card_view.dart';
 import 'package:security/all_cards/all_cards_builder.dart';
+import 'package:security/all_cards/pagination/cards_pagination_loader.dart';
 import 'package:security/all_cards/widgets/empty_all_cards.dart';
 import 'package:security/model/card_data_model.dart';
 import 'package:security/view_model/cards_view_model.dart';
@@ -95,7 +96,16 @@ class _AllCardsViewState extends State<AllCardsView> {
         final initialLoading = values.$2;
         if (initialLoading) return const ShimmerAllCards();
         if (cards.isEmpty) return const EmptyAllCards();
-        return AllCardsBuilder(cards: cards);
+        return CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: AllCardsBuilder(cards: cards),
+            ),
+            const SliverToBoxAdapter(
+              child: CardsPaginationLoader(),
+            ),
+          ],
+        );
       },
       selector: (p0, p1) => (p1.cards, p1.initialLoading),
     );
