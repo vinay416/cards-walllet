@@ -25,7 +25,7 @@ class BiometricAuth {
       if (jailBreak) throw Exception("Device jailbreaked");
 
       return await _auth.authenticate(
-        localizedReason: 'Testing',
+        localizedReason: 'Cards Wallet',
         authMessages: [
           const AndroidAuthMessages(
             signInTitle: 'Biometric authentication required!',
