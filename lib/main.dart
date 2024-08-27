@@ -3,8 +3,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:secure_application/secure_application.dart';
-import 'package:security/all_cards/all_cards_view.dart';
 import 'package:security/src/biometric_auth.dart';
+import 'package:security/src/home_screen.dart';
 
 import 'core/cards_local_storage.dart';
 import 'view_model/cards_view_model.dart';
@@ -30,7 +30,7 @@ class MainApp extends StatelessWidget {
         darkTheme: ThemeData(
           colorScheme: const ColorScheme.dark(primary: Colors.white),
         ),
-        home: const AllCardsView(),
+        home: const HomeScreen(),
         debugShowCheckedModeBanner: false,
         builder: (context, child) {
           return SecureApplication(

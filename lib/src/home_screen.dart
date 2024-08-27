@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:secure_application/secure_application.dart';
+import 'package:security/all_cards/all_cards_view.dart';
 import 'package:security/src/biometric_auth.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -42,36 +43,37 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
         );
       },
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text("Security"),
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text("ACCOUNT NO."),
-              const SizedBox(height: 100),
-              ElevatedButton(
-                onPressed: () => secureApplicationController?.lock(),
-                child: const Text("LOCK"),
-              ),
-              const SizedBox(height: 50),
-              ElevatedButton(
-                onPressed: () {
-                  secureApplicationController?.secured ?? false
-                      ? secureApplicationController?.open()
-                      : secureApplicationController?.secure();
-                  setState(() {});
-                },
-                child: secureApplicationController?.secured ?? false
-                    ? const Text("UNSECURE")
-                    : const Text("SECURE"),
-              ),
-            ],
-          ),
-        ),
-      ),
+      child: const AllCardsView(),
+      // child: Scaffold(
+      //   appBar: AppBar(
+      //     title: const Text("Security"),
+      //   ),
+      //   body: Center(
+      //     child: Column(
+      //       mainAxisAlignment: MainAxisAlignment.center,
+      //       children: [
+      //         const Text("ACCOUNT NO."),
+      //         const SizedBox(height: 100),
+      //         ElevatedButton(
+      //           onPressed: () => secureApplicationController?.lock(),
+      //           child: const Text("LOCK"),
+      //         ),
+      //         const SizedBox(height: 50),
+      //         ElevatedButton(
+      //           onPressed: () {
+      //             secureApplicationController?.secured ?? false
+      //                 ? secureApplicationController?.open()
+      //                 : secureApplicationController?.secure();
+      //             setState(() {});
+      //           },
+      //           child: secureApplicationController?.secured ?? false
+      //               ? const Text("UNSECURE")
+      //               : const Text("SECURE"),
+      //         ),
+      //       ],
+      //     ),
+      //   ),
+      // ),
     );
   }
 }

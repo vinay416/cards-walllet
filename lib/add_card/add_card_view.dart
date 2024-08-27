@@ -58,11 +58,13 @@ class _AddCardViewState extends State<AddCardView> with OverlayLoaderMixin {
         FocusScope.of(context).unfocus();
         showFront();
       },
-      child: FractionallySizedBox(
-        heightFactor: 0.92,
-        child: Padding(
-          padding: const EdgeInsets.all(10).copyWith(top: 20),
-          child: buildForm(),
+      child: SafeArea(
+        child: FractionallySizedBox(
+          heightFactor: 0.92,
+          child: Padding(
+            padding: const EdgeInsets.all(10).copyWith(top: 20),
+            child: buildForm(),
+          ),
         ),
       ),
     );

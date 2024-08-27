@@ -63,7 +63,7 @@ class _AllCardsViewState extends State<AllCardsView> {
               : const Icon(Icons.edit_square, color: Colors.blue),
         );
       },
-      selector: (p0, p1) => p1.isEditMode,
+      selector: (p0, p1) => p1.isEditMode && p1.cards.isNotEmpty,
     );
   }
 
