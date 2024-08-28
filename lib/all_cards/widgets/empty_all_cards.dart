@@ -8,7 +8,7 @@ class EmptyAllCards extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Image.asset("assets/wallet.jpg"),
+        Image.asset("assets/wallet.png"),
         const Text(
           "No cards added yet!",
           style: TextStyle(fontSize: 18),

@@ -12,38 +12,20 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
+class _HomeScreenState extends State<HomeScreen> {
   bool authLoader = false;
   SecureApplicationController? secureApplicationController;
 
   @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addObserver(this);
-  }
-
-  @override
   void didChangeDependencies() {
     secureApplicationController = SecureApplicationProvider.of(context);
-    secureApplicationController?.lock();
+    secureApplicationController?.secure();
     super.didChangeDependencies();
   }
 
   void setLoader(bool status) {
     authLoader = status;
     setState(() {});
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    switch (state) {
-      case AppLifecycleState.paused:
-        secureApplicationController?.lock();
-        secureApplicationController?.secure();
-        break;
-      default:
-    }
-    super.didChangeAppLifecycleState(state);
   }
 
   @override
@@ -54,8 +36,14 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
           child: authLoader
               ? const CircularProgressIndicator()
               : ElevatedButton(
+                  style: const ButtonStyle(
+                    backgroundColor: WidgetStatePropertyAll(Colors.brown),
+                  ),
                   onPressed: onUnlock,
-                  child: const Text("UNLOCK"),
+                  child: const Text(
+                    "UNLOCK",
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
         );
       },
@@ -76,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    secureApplicationController?.dispose();
     super.dispose();
   }
 }

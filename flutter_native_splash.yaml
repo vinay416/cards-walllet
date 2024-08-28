@@ -5,12 +5,12 @@ flutter_native_splash:
   fullscreen: false
 
   color: "#ffffff"
-  image: assets/wallet.jpg
+  image: assets/wallet.png
   color_dark: "#121212"
-  image_dark: assets/wallet.jpg
+  image_dark: assets/wallet.png
 
   android_12:
-    image: assets/wallet.jpg
+    image: assets/wallet.png
     icon_background_color: "#ffffff"
-    image_dark: assets/wallet.jpg
+    image_dark: assets/wallet.png
     icon_background_color_dark: "#121212"

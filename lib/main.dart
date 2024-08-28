@@ -34,6 +34,7 @@ class MainApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         builder: (context, child) {
           return SecureApplication(
+            nativeRemoveDelay: 100,
             onNeedUnlock: (secureApplicationController) async {
               final success = await BiometricAuth().auth();
               if (success) {
