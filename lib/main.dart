@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:secure_application/secure_application.dart';
+import 'package:security/jailbreaked/jailbreaked_ui.dart';
 import 'package:security/src/biometric_auth.dart';
 import 'package:security/src/home_screen.dart';
 
@@ -11,9 +12,14 @@ import 'view_model/cards_view_model.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await CardsLocalStorage().loadCardKeys();
-  log('BiometricAuth().isAvailable -> ${await BiometricAuth().isAvailable}');
-  runApp(const MainApp());
+  final jailBreaked = await BiometricAuth().checkJailBreak();
+  if (!jailBreaked) {
+    await CardsLocalStorage().loadCardKeys();
+    log('BiometricAuth().isAvailable -> ${await BiometricAuth().isAvailable}');
+    runApp(const MainApp());
+  } else {
+    runApp(const JailBreaked());
+  }
 }
 
 class MainApp extends StatelessWidget {
@@ -48,6 +54,18 @@ class MainApp extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+}
+
+class JailBreaked extends StatelessWidget {
+  const JailBreaked({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: JailbreakedUI(),
     );
   }
 }

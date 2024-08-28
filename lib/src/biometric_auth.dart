@@ -18,12 +18,15 @@ class BiometricAuth {
     return await _auth.isDeviceSupported();
   }
 
+  Future<bool> checkJailBreak() async {
+    final jailBreak = await FlutterJailbreakDetection.jailbroken;
+    log("FlutterJailbreakDetection.jailbroken $jailBreak");
+    if (jailBreak) log("Device jailbreaked");
+    return jailBreak;
+  }
+
   Future<bool> auth() async {
     try {
-      final jailBreak = await FlutterJailbreakDetection.jailbroken;
-      log("FlutterJailbreakDetection.jailbroken $jailBreak");
-      if (jailBreak) throw Exception("Device jailbreaked");
-
       return await _auth.authenticate(
         localizedReason: 'Cards Wallet',
         authMessages: [
