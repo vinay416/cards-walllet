@@ -1,0 +1,16 @@
+flutter_native_splash:
+  android: true
+  ios: true
+  web: false
+  fullscreen: false
+
+  color: "#ffffff"
+  image: assets/wallet.jpg
+  color_dark: "#121212"
+  image_dark: assets/wallet.jpg
+
+  android_12:
+    image: assets/wallet.jpg
+    icon_background_color: "#ffffff"
+    image_dark: assets/wallet.jpg
+    icon_background_color_dark: "#121212"
