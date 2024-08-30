@@ -1,5 +1,7 @@
 PODS:
   - Flutter (1.0.0)
+  - flutter_exit_app (1.1.4):
+    - Flutter
   - flutter_jailbreak_detection (1.0.0):
     - Flutter
     - IOSSecuritySuite
@@ -23,6 +25,7 @@ PODS:
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
+  - flutter_exit_app (from `.symlinks/plugins/flutter_exit_app/ios`)
   - flutter_jailbreak_detection (from `.symlinks/plugins/flutter_jailbreak_detection/ios`)
   - flutter_native_splash (from `.symlinks/plugins/flutter_native_splash/ios`)
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
@@ -39,6 +42,8 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
+  flutter_exit_app:
+    :path: ".symlinks/plugins/flutter_exit_app/ios"
   flutter_jailbreak_detection:
     :path: ".symlinks/plugins/flutter_jailbreak_detection/ios"
   flutter_native_splash:
@@ -56,6 +61,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  flutter_exit_app: 452eaaeeda718095eeebcb45c9fe2e7e37f212b4
   flutter_jailbreak_detection: c5bf66ff6c0c4230769b6ba0bd63eb6ac4148a76
   flutter_native_splash: edf599c81f74d093a4daf8e17bd7a018854bc778
   flutter_secure_storage: d33dac7ae2ea08509be337e775f6b59f1ff45f12

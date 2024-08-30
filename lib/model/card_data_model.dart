@@ -2,20 +2,24 @@
 import 'dart:convert';
 
 class CardDataModel {
+  final String id;
   final String cardNo;
   final String expiry;
   final String name;
   final String cvv;
   final String? issuedBy;
   const CardDataModel({
+    required this.id,
     required this.cardNo,
     required this.expiry,
     required this.name,
-    required this.cvv,this.issuedBy,
+    required this.cvv,
+    this.issuedBy,
   });
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
+      'id': id,
       'cardNo': cardNo,
       'expiry': expiry,
       'name': name,
@@ -26,6 +30,7 @@ class CardDataModel {
 
   factory CardDataModel.fromMap(Map<String, dynamic> map) {
     return CardDataModel(
+      id: map['id'] as String,
       cardNo: map['cardNo'] as String,
       expiry: map['expiry'] as String,
       name: map['name'] as String,
@@ -41,6 +46,18 @@ class CardDataModel {
       name: "",
       cvv: "",
       issuedBy: "",
+      id: "",
+    );
+  }
+
+  factory CardDataModel.createNew() {
+    return CardDataModel(
+      cardNo: "",
+      expiry: "",
+      name: "",
+      cvv: "",
+      issuedBy: "",
+      id: DateTime.now().millisecond.toString(),
     );
   }
 
@@ -58,11 +75,11 @@ class CardDataModel {
     String? issuedBy,
   }) {
     return CardDataModel(
-      cardNo: cardNo ?? this.cardNo,
-      expiry: expiry ?? this.expiry,
-      name: name ?? this.name,
-      cvv: cvv ?? this.cvv,
-      issuedBy: issuedBy ?? this.issuedBy ?? ""
-    );
+        id: id,
+        cardNo: cardNo ?? this.cardNo,
+        expiry: expiry ?? this.expiry,
+        name: name ?? this.name,
+        cvv: cvv ?? this.cvv,
+        issuedBy: issuedBy ?? this.issuedBy ?? "");
   }
 }

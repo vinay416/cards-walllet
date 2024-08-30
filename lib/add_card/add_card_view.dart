@@ -45,7 +45,7 @@ class _AddCardViewState extends State<AddCardView> with OverlayLoaderMixin {
   void initState() {
     super.initState();
     vm = context.read<CardsViewModel>();
-    vm.editCardDetails = widget.cardDetails ?? CardDataModel.empty();
+    vm.editCardDetails = widget.cardDetails ?? CardDataModel.createNew();
   }
 
   void showFront() => cardController.reverse();

@@ -45,10 +45,10 @@ class CardsLocalStorage {
       final bool isMore = remainCards > offset;
       final int end = (isMore ? offset : remainCards) + startOffset;
       for (int i = startOffset; i < end; i++) {
-        final cardNo = _cardKeys.values.elementAt(i);
-        final data = await _storage.read(key: cardNo);
+        final cardId = _cardKeys.values.elementAt(i);
+        final data = await _storage.read(key: cardId);
         if (data == null) {
-          log("Card No $cardNo data error");
+          log("Card No $cardId data error");
           continue;
         }
         final CardDataModel card = CardDataModel.fromJson(data);
@@ -63,14 +63,14 @@ class CardsLocalStorage {
 
   Future<(bool success, String? error)> saveCard(CardDataModel card) async {
     try {
-      final cardNoKey = card.cardNo;
+      final cardId = card.id;
       final cardData = card.toJson();
       // Add key set if not exist
-      if (!_cardKeyExist(cardNoKey)) {
-        _cardKeys.addAll({cardNoKey: cardNoKey});
+      if (!_cardKeyExist(cardId)) {
+        _cardKeys.addAll({cardId: cardId});
         await _storage.write(key: _userCardsKey, value: jsonEncode(_cardKeys));
       }
-      await _storage.write(key: cardNoKey, value: cardData);
+      await _storage.write(key: cardId, value: cardData);
       return (true, null);
     } catch (e) {
       log("Saving failed error --> $e");
@@ -80,13 +80,13 @@ class CardsLocalStorage {
 
   Future<(bool success, String? error)> updateCard(CardDataModel card) async {
     try {
-      final cardNoKey = card.cardNo;
+      final cardId = card.id;
       final cardData = card.toJson();
       // if not exist
-      if (!_cardKeyExist(cardNoKey)) {
-        throw ErrorDescription("Card Key not exist $cardNoKey");
+      if (!_cardKeyExist(cardId)) {
+        throw ErrorDescription("Card Key not exist $cardId");
       }
-      await _storage.write(key: cardNoKey, value: cardData);
+      await _storage.write(key: cardId, value: cardData);
       return (true, null);
     } catch (e) {
       log("Updating failed error --> $e");
@@ -96,18 +96,18 @@ class CardsLocalStorage {
 
   Future<(bool success, String? error)> removeCard(CardDataModel card) async {
     try {
-      final cardNoKey = card.cardNo;
+      final cardId = card.id;
       // Add key set if not exist
-      if (!_cardKeyExist(cardNoKey)) {
+      if (!_cardKeyExist(cardId)) {
         throw ErrorDescription("Card Key missing");
       }
 
-      await _storage.delete(key: cardNoKey);
+      await _storage.delete(key: cardId);
       // checking if actually deleted
-      if (await _storage.containsKey(key: cardNoKey)) {
+      if (await _storage.containsKey(key: cardId)) {
         throw ErrorDescription("Card info delete failed");
       }
-      _cardKeys.remove(cardNoKey);
+      _cardKeys.remove(cardId);
       await _storage.write(key: _userCardsKey, value: jsonEncode(_cardKeys));
 
       return (true, null);
@@ -117,8 +117,8 @@ class CardsLocalStorage {
     }
   }
 
-  bool _cardKeyExist(String cardNo) {
-    return _cardKeys.containsKey(cardNo);
+  bool _cardKeyExist(String cardId) {
+    return _cardKeys.containsKey(cardId);
   }
 
   Future<(bool success, String? error)> reorderCardKeys(
@@ -127,8 +127,8 @@ class CardsLocalStorage {
     try {
       _cardKeys.clear();
       for (var element in cardsList) {
-        final cardNoKey = element.cardNo;
-        _cardKeys.addAll({cardNoKey: cardNoKey});
+        final cardId = element.id;
+        _cardKeys.addAll({cardId: cardId});
       }
       await _storage.write(key: _userCardsKey, value: jsonEncode(_cardKeys));
       return (true, null);

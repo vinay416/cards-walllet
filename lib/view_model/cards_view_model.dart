@@ -96,7 +96,7 @@ class CardsViewModel with ChangeNotifier {
     CardDataModel card,
   ) async {
     try {
-      final exist = _cards.where((e) => e.cardNo == card.cardNo).isNotEmpty;
+      final exist = _cards.where((e) => e.id == card.id).isNotEmpty;
       if (exist) {
         log("Card already added ${card.toJson()}");
         return (false, "Card already added");
@@ -118,7 +118,7 @@ class CardsViewModel with ChangeNotifier {
     CardDataModel card,
   ) async {
     try {
-      final notExist = _cards.where((e) => e.cardNo == card.cardNo).isEmpty;
+      final notExist = _cards.where((e) => e.id == card.id).isEmpty;
       if (notExist) {
         log("Card not exist ${card.toJson()}");
         return (false, "Card not exist");
@@ -127,7 +127,7 @@ class CardsViewModel with ChangeNotifier {
       if (error != null) throw ErrorDescription(error);
 
       final tempCards = [..._cards];
-      final index = tempCards.indexWhere((e) => e.cardNo == card.cardNo);
+      final index = tempCards.indexWhere((e) => e.id == card.id);
       if (index == -1) throw ErrorDescription("local list index $index");
       tempCards.removeAt(index);
       tempCards.insert(index, card);
@@ -144,7 +144,7 @@ class CardsViewModel with ChangeNotifier {
     CardDataModel card,
   ) async {
     try {
-      final exist = _cards.where((e) => e.cardNo == card.cardNo).isNotEmpty;
+      final exist = _cards.where((e) => e.id == card.id).isNotEmpty;
       if (!exist) {
         throw ErrorDescription("Card not exist");
       }
